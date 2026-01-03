@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="de">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MS Parsch - Mathematik</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f5dc 0%, #e8d7c3 100%);
+      width: 100%;
+      height: 100%;
+      overflow-auto;
+    }
+
+    html {
+      height: 100%;
+      width: 100%;
+    }
+
+    .app-wrapper {
+      min-height: 100%;
+      width: 100%;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .math-symbols {
+      position: fixed;
+      font-size: 60px;
+      opacity: 0.08;
+      color: #2c5f8d;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .symbol-1 { top: 10%; left: 5%; transform: rotate(-15deg); }
+    .symbol-2 { top: 20%; right: 8%; transform: rotate(20deg); }
+    .symbol-3 { bottom: 15%; left: 10%; transform: rotate(10deg); }
+    .symbol-4 { bottom: 25%; right: 5%; transform: rotate(-20deg); }
+    .symbol-5 { top: 50%; left: 3%; transform: rotate(25deg); }
+    .symbol-6 { top: 60%; right: 6%; transform: rotate(-10deg); }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      max-width: 1000px;
+      width: 100%;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 50px;
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(44, 95, 141, 0.15);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 48px;
+      background: linear-gradient(135deg, #2c5f8d 0%, #4a8fc7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #d4c4b0;
+      color: #2c5f8d;
+      border: none;
+      padding: 15px 30px;
+      font-size: 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-bottom: 30px;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .back-button:hover {
+      background: #c4b4a0;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .class-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 20px;
+    }
+
+    .class-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px 30px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 3px solid transparent;
+      box-shadow: 0 6px 20px rgba(44, 95, 141, 0.12);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .class-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #2c5f8d 0%, #4a8fc7 100%);
+    }
+
+    .class-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 32px rgba(44, 95, 141, 0.2);
+      border-color: #4a8fc7;
+    }
+
+    .class-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+    }
+
+    .class-title {
+      font-size: 32px;
+      color: #2c5f8d;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .topics-container {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 8px 24px rgba(44, 95, 141, 0.15);
+    }
+
+    .topics-title {
+      font-size: 36px;
+      color: #2c5f8d;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .empty-topics {
+      text-align: center;
+      padding: 60px 20px;
+      color: #666;
+      font-size: 22px;
+    }
+
+    .empty-icon {
+      font-size: 80px;
+      margin-bottom: 20px;
+      opacity: 0.3;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 36px;
+      }
+
+      .class-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .class-card {
+        padding: 30px 20px;
+      }
+
+      .class-icon {
+        font-size: 52px;
+      }
+
+      .class-title {
+        font-size: 28px;
+      }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="math-symbols symbol-1">
+   ∑
+  </div>
+  <div class="math-symbols symbol-2">
+   π
+  </div>
+  <div class="math-symbols symbol-3">
+   √
+  </div>
+  <div class="math-symbols symbol-4">
+   ∞
+  </div>
+  <div class="math-symbols symbol-5">
+   ÷
+  </div>
+  <div class="math-symbols symbol-6">
+   ×
+  </div>
+  <div class="app-wrapper">
+   <div class="content">
+    <header>
+     <h1 id="mainTitle">MS Parsch - Mathematik</h1>
+    </header><!-- Main View: Class Selection -->
+    <main id="mainView">
+     <div class="class-grid">
+      <div class="class-card" onclick="showTopics('class1')">
+       <div class="class-icon">
+        1️⃣
+       </div>
+       <h2 class="class-title" id="class1Label">1. Klasse</h2>
+      </div>
+      <div class="class-card" onclick="showTopics('class2')">
+       <div class="class-icon">
+        2️⃣
+       </div>
+       <h2 class="class-title" id="class2Label">2. Klasse</h2>
+      </div>
+      <div class="class-card" onclick="showTopics('class3')">
+       <div class="class-icon">
+        3️⃣
+       </div>
+       <h2 class="class-title" id="class3Label">3. Klasse</h2>
+      </div>
+      <div class="class-card" onclick="showTopics('class4')">
+       <div class="class-icon">
+        4️⃣
+       </div>
+       <h2 class="class-title" id="class4Label">4. Klasse</h2>
+      </div>
+      <div class="class-card" onclick="showTopics('dfk')">
+       <div class="class-icon">
+        📚
+       </div>
+       <h2 class="class-title" id="dfkLabel">DFK</h2>
+      </div>
+     </div>
+    </main><!-- Topics View -->
+    <div id="topicsView" class="hidden"><button class="back-button" onclick="showMain()"> ← Zurück </button>
+     <div class="topics-container">
+      <h2 class="topics-title" id="topicsTitle"></h2>
+      <div class="empty-topics">
+       <div class="empty-icon">
+        📝
+       </div>
+       <p>Hier werden die Themen angezeigt, sobald sie hinzugefügt werden.</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+    const defaultConfig = {
+      main_title: "MS Parsch - Mathematik",
+      class_1_label: "1. Klasse",
+      class_2_label: "2. Klasse",
+      class_3_label: "3. Klasse",
+      class_4_label: "4. Klasse",
+      dfk_label: "DFK"
+    };
+
+    let currentView = 'main';
+
+    function showTopics(classId) {
+      currentView = classId;
+      document.getElementById('mainView').classList.add('hidden');
+      document.getElementById('topicsView').classList.remove('hidden');
+      
+      const classLabels = {
+        'class1': window.elementSdk?.config?.class_1_label || defaultConfig.class_1_label,
+        'class2': window.elementSdk?.config?.class_2_label || defaultConfig.class_2_label,
+        'class3': window.elementSdk?.config?.class_3_label || defaultConfig.class_3_label,
+        'class4': window.elementSdk?.config?.class_4_label || defaultConfig.class_4_label,
+        'dfk': window.elementSdk?.config?.dfk_label || defaultConfig.dfk_label
+      };
+      
+      document.getElementById('topicsTitle').textContent = classLabels[classId];
+    }
+
+    function showMain() {
+      currentView = 'main';
+      document.getElementById('topicsView').classList.add('hidden');
+      document.getElementById('mainView').classList.remove('hidden');
+    }
+
+    async function onConfigChange(config) {
+      document.getElementById('mainTitle').textContent = config.main_title || defaultConfig.main_title;
+      document.getElementById('class1Label').textContent = config.class_1_label || defaultConfig.class_1_label;
+      document.getElementById('class2Label').textContent = config.class_2_label || defaultConfig.class_2_label;
+      document.getElementById('class3Label').textContent = config.class_3_label || defaultConfig.class_3_label;
+      document.getElementById('class4Label').textContent = config.class_4_label || defaultConfig.class_4_label;
+      document.getElementById('dfkLabel').textContent = config.dfk_label || defaultConfig.dfk_label;
+    }
+
+    function mapToCapabilities(config) {
+      return {
+        recolorables: [],
+        borderables: [],
+        fontEditable: undefined,
+        fontSizeable: undefined
+      };
+    }
+
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ["main_title", config.main_title || defaultConfig.main_title],
+        ["class_1_label", config.class_1_label || defaultConfig.class_1_label],
+        ["class_2_label", config.class_2_label || defaultConfig.class_2_label],
+        ["class_3_label", config.class_3_label || defaultConfig.class_3_label],
+        ["class_4_label", config.class_4_label || defaultConfig.class_4_label],
+        ["dfk_label", config.dfk_label || defaultConfig.dfk_label]
+      ]);
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b84c23e92549bf8',t:'MTc2NzQ2NzAzMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
